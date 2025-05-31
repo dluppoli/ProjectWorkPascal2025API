@@ -3,7 +3,6 @@ WORKDIR /App
 
 # Copy everything
 COPY . ./
-COPY appsettings.cicd.json appsettings.json
 # Restore as distinct layers
 RUN dotnet restore
 # Build and publish a release
