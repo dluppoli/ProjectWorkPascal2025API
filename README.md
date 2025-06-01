@@ -86,10 +86,8 @@ Restituisce l'elenco di tutte le categorie di prodotto
 Restituisce il dettaglio di una categoria, dato il suo id (numerico)
 ### ```GET /customer/categories/{id}/products```
 Restituisce tutti i prodotti presenti in una categoria, dato il suo id (numerico)
-### ```GET /customer/bill```
-Restituisce il conto del tavolo, composto dal totale e dal dettaglio di tutti gli ordini "a pagamento"
-### ```GET /customer/order```
-Restituisce tutti i prodotti ordinati dal tavolo, inserendo anche quelli compresi nel menù all you can ea
+### ```GET /customer/bill/{includeall}```
+Restituisce il conto del tavolo, composto dal totale e dal dettaglio di tutti gli ordini, con la possibilità di includerli tutti o solo quelli "a pagamento" (in base al flag includi tutti)
 ### ```POST /customer/order```
 Aggiunge uno o più prodotti all'ordine del tavolo
 ```json

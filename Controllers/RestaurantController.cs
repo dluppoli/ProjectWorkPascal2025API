@@ -44,19 +44,19 @@ public static class RestaurantController
         return Results.Ok(await context.Products.Where(q => q.IdCategory == id && id != MenuId).ProjectTo<ProductDto>(mapper).ToListAsync());
     }
 
-    public static async Task<IResult> preconto(int id, RestaurantContext context, bool comandaCompleta = false)
+    public static async Task<IResult> preconto(int id, RestaurantContext context, bool includiMenu, bool includiPrezzi0)
     {
         var candidate = await context.Tables.FirstOrDefaultAsync(q => q.Id == id);
-        return await preconto(candidate, context, comandaCompleta);
+        return await preconto(candidate, context, includiMenu, includiPrezzi0);
     }
 
-    public static async Task<IResult> preconto(string tableKey, RestaurantContext context, bool comandaCompleta = false)
+    public static async Task<IResult> preconto(string tableKey, RestaurantContext context, bool includiMenu, bool includiPrezzi0)
     {
         var candidate = await context.Tables.FirstOrDefaultAsync(q => q.TableKey == tableKey);
-        return await preconto(candidate, context, comandaCompleta);
+        return await preconto(candidate, context, includiMenu, includiPrezzi0);
     }
 
-    private static async Task<IResult> preconto(Table? candidate, RestaurantContext context, bool comandaCompleta)
+    private static async Task<IResult> preconto(Table? candidate, RestaurantContext context, bool includiMenu, bool includiPrezzi0)
     {
         if (candidate == null)
             return Results.NotFound();
@@ -66,8 +66,8 @@ public static class RestaurantController
 
         var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
         var order = await context.Orders.Include(i => i.Product)
-            .Where(q => q.TableId == candidate.Id && q.TableKey == candidate.TableKey && (!comandaCompleta || q.ProductId != MenuId))
-            .Where(q => comandaCompleta == true || q.Price > 0)
+            .Where(q => q.TableId == candidate.Id && q.TableKey == candidate.TableKey && (includiMenu || q.ProductId != MenuId))
+            //.Where(q => comandaCompleta == true || q.Price > 0)
             .OrderBy(ob => ob.OrderDate)
             .ProjectTo<OrderDto>(mapper)
             .ToListAsync();
@@ -77,7 +77,7 @@ public static class RestaurantController
             TableId = candidate.Id,
             Occupants = candidate.Occupants ?? 0,
             TotalPrice = order.Sum(q => q.Price * q.Qty),
-            Orders = order
+            Orders = order.Where(q => includiPrezzi0 == true || q.Price > 0).ToList(),
         };
 
         return Results.Ok(OrderSummary);

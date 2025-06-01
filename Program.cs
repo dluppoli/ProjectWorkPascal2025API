@@ -126,12 +126,12 @@ app.MapPut("/waiter/tables/{id}", async (int id, TableEditDto tableEdit, Restaur
 
 app.MapGet("/waiter/tables/{id}/bill", async (int id, RestaurantContext context) =>
 {
-    return await RestaurantController.preconto(id, context);
+    return await RestaurantController.preconto(id, context, true, false);
 }).RequireAuthorization();
 
 app.MapGet("/waiter/tables/{id}/order", async (int id, RestaurantContext context) =>
 {    
-    return await RestaurantController.preconto(id, context, true);
+    return await RestaurantController.preconto(id, context, false, true);
 }).RequireAuthorization();
 
 app.MapPost("/waiter/tables/{id}/order", async (int id, List<OrderDto> orders, RestaurantContext context) =>
@@ -244,21 +244,21 @@ app.MapGet("/customer/categories/{id}/products", async (int id, HttpRequest requ
     return await RestaurantController.getPiattiCategoria(id, context);
 });
 
-app.MapGet("/customer/bill", async (HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/bill/{includiTutti}", async (int includiTutti, HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
         return Results.Unauthorized();
-    return await RestaurantController.preconto(apiKey, context);
+    return await RestaurantController.preconto(apiKey, context,true,includiTutti==1);
 });
 
-app.MapGet("/customer/order", async (HttpRequest request, RestaurantContext context) =>
+/*app.MapGet("/customer/order", async (HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
         return Results.Unauthorized();
-    return await RestaurantController.preconto(apiKey, context, true);
-});
+    return await RestaurantController.preconto(apiKey, context, false, true);
+});*/
 
 app.MapPost("/customer/order", async (List<OrderDto> orders, HttpRequest request, RestaurantContext context) =>
 {
