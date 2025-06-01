@@ -23,11 +23,11 @@ Chiude la sessione utente, invalidando il token
 ## API per applicazione cameriere
 **NB** Tutte le API richiedono l'invio del token JWT
 
-### ```GET /cameriere/tavoli```
+### ```GET /waiter/tables```
 Restituisce elenco dei tavoli
-### ```GET /cameriere/tavoli/{id}```
+### ```GET /waiter/tables/{id}```
 Restituisce le informazioni di un tavolo dato il suo id (numerico)
-### ```PUT /cameriere/tavoli/{id}```
+### ```PUT /waiter/tables/{id}```
 Permette di aprire / chiudere un tavolo dato il suo id (numerico)
 ```json
 //Request Body per apertura tavolo
@@ -43,11 +43,11 @@ Permette di aprire / chiudere un tavolo dato il suo id (numerico)
     "occupied": false,
 }
 ```
-### ```GET /cameriere/tavoli/{id}/conto```
+### ```GET /waiter/tables/{id}/bill```
 Restituisce il conto del tavolo (identificato con il suo id numerico), composto dal totale e dal dettaglio di tutti gli ordini "a pagamento"
-### ```GET /cameriere/tavoli/{id}/ordine```
+### ```GET /waiter/tables/{id}/order```
 Restituisce tutti i prodotti ordinati dal tavolo (identificato con il suo id numerico), inserendo anche quelli compresi nel menù all you can eat
-### ```POST /cameriere/tavoli/{id}/ordine```
+### ```POST /waiter/tables/{id}/order```
 Aggiunge uno o più prodotti all'ordine del tavolo  (identificato con il suo id numerico)
 ```json
 [
@@ -57,40 +57,40 @@ Aggiunge uno o più prodotti all'ordine del tavolo  (identificato con il suo id 
     }
 ]
 ```
-### ```DELETE /cameriere/tavoli/{id}/ordine```
+### ```DELETE /waiter/tables/{id}/order```
 Cancella tutti i piatti ordinati da un tavolo (identificato con il suo id numerico)
-### ```DELETE /cameriere/tavoli/{id}/ordine/{ido} (per cancellare l'ordine di un piatto)```
+### ```DELETE /waiter/tables/{id}/order/{ido} (per cancellare l'ordine di un piatto)```
 Cancella tutti un piatto (identificato con il suo id numerico) dall'ordine di un tavolo (identificato con il suo id numerico)
-### ```GET /cameriere/prodotti```
+### ```GET /waiter/products```
 Restituisce l'elenco di tutti i prodotti
-### ```GET /cameriere/prodotti/{id}```
+### ```GET /waiter/products/{id}```
 Restituisce il dettaglio di un prodotto, dato il suo id (numerico)
-### ```GET /cameriere/categorie```
+### ```GET /waiter/categories```
 Restituisce l'elenco di tutte le categorie di prodotto
-### ```GET /cameriere/categorie/{id}```
+### ```GET /waiter/categories/{id}```
 Restituisce il dettaglio di una categoria, dato il suo id (numerico)
-### ```GET /cameriere/categorie/{id}/piatti```
+### ```GET /waiter/categories/{id}/products```
 Restituisce tutti i prodotti presenti in una categoria, dato il suo id (numerico)
 
 
 ## API per applicazione Cliente
 **NB** Tutte le API richiedono l'invio dell'Api Key (Header APIKey)
 
-### ```GET /cliente/prodotti```
+### ```GET /customer/products```
 Restituisce l'elenco di tutti i prodotti
-### ```GET /cliente/prodotti/{id}```
+### ```GET /customer/products/{id}```
 Restituisce il dettaglio di un prodotto, dato il suo id (numerico)
-### ```GET /cliente/categorie```
+### ```GET /customer/categories```
 Restituisce l'elenco di tutte le categorie di prodotto
-### ```GET /cliente/categorie/{id}```
+### ```GET /customer/categories/{id}```
 Restituisce il dettaglio di una categoria, dato il suo id (numerico)
-### ```GET /cliente/categorie/{id}/piatti```
+### ```GET /customer/categories/{id}/products```
 Restituisce tutti i prodotti presenti in una categoria, dato il suo id (numerico)
-### ```GET /cliente/preconto```
+### ```GET /customer/bill```
 Restituisce il conto del tavolo, composto dal totale e dal dettaglio di tutti gli ordini "a pagamento"
-### ```GET /cliente/ordine```
+### ```GET /customer/order```
 Restituisce tutti i prodotti ordinati dal tavolo, inserendo anche quelli compresi nel menù all you can ea
-### ```POST /cliente/ordine```
+### ```POST /customer/order```
 Aggiunge uno o più prodotti all'ordine del tavolo
 ```json
 [
@@ -104,13 +104,13 @@ Aggiunge uno o più prodotti all'ordine del tavolo
 ## API per applicazione Cucina
 **NB** Tutte le API richiedono l'invio del token JWT
 
-### ```GET /cucina/```
+### ```GET /kitchen/```
 Restituisce tutte le stazioni di lavoro
-### ```GET /cucina/{id}```
+### ```GET /kitchen/{id}```
 Restituisce il dettaglio di una stazione di lavoro, identificata dal suo id (numerico)
-### ```GET /cucina/{id}/ordine (elenco piatti da preparare)```
+### ```GET /kitchen/{id}/order (elenco piatti da preparare)```
 Restituisce tutti i prodotti da preparare presso una stazione di lavoro, identificata dal suo id (numerico)
-### ```POST /cucina/{id}/ordine (dichiara ordine preparato)```
+### ```POST /kitchen/{id}/order (dichiara ordine preparato)```
 Imposta alcuni prodotti come preparati (presso una stazione di lavoro)
 ```json
 [
@@ -123,7 +123,7 @@ Imposta alcuni prodotti come preparati (presso una stazione di lavoro)
 ## API per applicazione Statistiche
 **NB** Tutte le API richiedono l'invio del token JWT
 
-### ```GET /statistiche/tavoli```
+### ```GET /stats/tables```
 Restituisce elenco dei tavoli
-### ```GET /statistiche/ordini```
+### ```GET /stats/order```
 Restituisce l'elenco dei prodotti ordinati nella giornata odierna

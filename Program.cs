@@ -62,12 +62,12 @@ app.UseAuthorization();
 #endregion
 
 #region Cameriere
-app.MapGet("/cameriere/tavoli", async (RestaurantContext context) =>
+app.MapGet("/waiter/tables", async (RestaurantContext context) =>
 {
     return await context.Tables.ToListAsync();
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/tavoli/{id}", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/tables/{id}", async (int id, RestaurantContext context) =>
 {
     var candidate = await context.Tables.FirstOrDefaultAsync(q => q.Id == id);
 
@@ -78,7 +78,7 @@ app.MapGet("/cameriere/tavoli/{id}", async (int id, RestaurantContext context) =
 
 }).RequireAuthorization();
 
-app.MapPut("/cameriere/tavoli/{id}", async (int id, TableEditDto tableEdit, RestaurantContext context) =>
+app.MapPut("/waiter/tables/{id}", async (int id, TableEditDto tableEdit, RestaurantContext context) =>
 {
     if (id != tableEdit.Id) return Results.BadRequest();
 
@@ -124,23 +124,23 @@ app.MapPut("/cameriere/tavoli/{id}", async (int id, TableEditDto tableEdit, Rest
 
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/tavoli/{id}/conto", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/tables/{id}/bill", async (int id, RestaurantContext context) =>
 {
     return await RestaurantController.preconto(id, context);
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/tavoli/{id}/ordine", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/tables/{id}/order", async (int id, RestaurantContext context) =>
 {    
     return await RestaurantController.preconto(id, context, true);
 }).RequireAuthorization();
 
-app.MapPost("/cameriere/tavoli/{id}/ordine", async (int id, List<OrderDto> orders, RestaurantContext context) =>
+app.MapPost("/waiter/tables/{id}/order", async (int id, List<OrderDto> orders, RestaurantContext context) =>
 {
     return await RestaurantController.aggiungiPiatto(id, orders, context);
 
 }).RequireAuthorization();
 
-app.MapDelete("/cameriere/tavoli/{id}/ordine", async (int id, RestaurantContext context) =>
+app.MapDelete("/waiter/tables/{id}/order", async (int id, RestaurantContext context) =>
 {
     var candidate = await context.Tables.FirstOrDefaultAsync(q => q.Id == id);
 
@@ -157,7 +157,7 @@ app.MapDelete("/cameriere/tavoli/{id}/ordine", async (int id, RestaurantContext 
 
 }).RequireAuthorization();
 
-app.MapDelete("/cameriere/tavoli/{id}/ordine/{idc}", async (int id, int idc, RestaurantContext context) =>
+app.MapDelete("/waiter/tables/{id}/order/{idc}", async (int id, int idc, RestaurantContext context) =>
 {
     var candidate = await context.Tables.FirstOrDefaultAsync(q => q.Id == id);
 
@@ -177,34 +177,34 @@ app.MapDelete("/cameriere/tavoli/{id}/ordine/{idc}", async (int id, int idc, Res
 
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/prodotti", async (RestaurantContext context) =>
+app.MapGet("/waiter/products", async (RestaurantContext context) =>
 {
     return await RestaurantController.getPiatti(context);
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/prodotti/{id}", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/products/{id}", async (int id, RestaurantContext context) =>
 {
     return await RestaurantController.getPiatto(id, context);
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/categorie", async (RestaurantContext context) =>
+app.MapGet("/waiter/categories", async (RestaurantContext context) =>
 {
     return await RestaurantController.getCategorie(context);
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/categorie/{id}", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/categories/{id}", async (int id, RestaurantContext context) =>
 {
     return await RestaurantController.getCategoria(id, context);
 }).RequireAuthorization();
 
-app.MapGet("/cameriere/categorie/{id}/prodotti", async (int id, RestaurantContext context) =>
+app.MapGet("/waiter/categories/{id}/products", async (int id, RestaurantContext context) =>
 {   
     return await RestaurantController.getPiattiCategoria(id, context);
 }).RequireAuthorization();
 #endregion
 
 #region Cliente
-app.MapGet("/cliente/prodotti", async (HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/products", async (HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -212,7 +212,7 @@ app.MapGet("/cliente/prodotti", async (HttpRequest request, RestaurantContext co
     return await RestaurantController.getPiatti(context);
 });
 
-app.MapGet("/cliente/prodotti/{id}", async (int id, HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/products/{id}", async (int id, HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -220,7 +220,7 @@ app.MapGet("/cliente/prodotti/{id}", async (int id, HttpRequest request, Restaur
     return await RestaurantController.getPiatto(id, context);
 });
 
-app.MapGet("/cliente/categorie", async (HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/categories", async (HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -228,7 +228,7 @@ app.MapGet("/cliente/categorie", async (HttpRequest request, RestaurantContext c
     return await RestaurantController.getCategorie(context);
 });
 
-app.MapGet("/cliente/categorie/{id}", async (int id, HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/categories/{id}", async (int id, HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -236,7 +236,7 @@ app.MapGet("/cliente/categorie/{id}", async (int id, HttpRequest request, Restau
     return await RestaurantController.getCategoria(id, context);
 });
 
-app.MapGet("/cliente/categorie/{id}/prodotti", async (int id, HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/categories/{id}/products", async (int id, HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -244,7 +244,7 @@ app.MapGet("/cliente/categorie/{id}/prodotti", async (int id, HttpRequest reques
     return await RestaurantController.getPiattiCategoria(id, context);
 });
 
-app.MapGet("/cliente/preconto", async (HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/bill", async (HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -252,7 +252,7 @@ app.MapGet("/cliente/preconto", async (HttpRequest request, RestaurantContext co
     return await RestaurantController.preconto(apiKey, context);
 });
 
-app.MapGet("/cliente/ordine", async (HttpRequest request, RestaurantContext context) =>
+app.MapGet("/customer/order", async (HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -260,7 +260,7 @@ app.MapGet("/cliente/ordine", async (HttpRequest request, RestaurantContext cont
     return await RestaurantController.preconto(apiKey, context, true);
 });
 
-app.MapPost("/cliente/ordine", async (List<OrderDto> orders, HttpRequest request, RestaurantContext context) =>
+app.MapPost("/customer/order", async (List<OrderDto> orders, HttpRequest request, RestaurantContext context) =>
 {
     var apiKey = await SecurityController.GetApiKeyFromHttpContext(request, context);
     if (string.IsNullOrEmpty(apiKey))
@@ -271,13 +271,13 @@ app.MapPost("/cliente/ordine", async (List<OrderDto> orders, HttpRequest request
 #endregion
 
 #region Cucina
-app.MapGet("/cucina", async (RestaurantContext context) =>
+app.MapGet("/kitchen", async (RestaurantContext context) =>
 {
     var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
     return await context.ProductPrepStations.ProjectTo<ProductPrepStationDto>(mapper).ToListAsync();
 }).RequireAuthorization();
 
-app.MapGet("/cucina/{id}", async (int id, RestaurantContext context) =>
+app.MapGet("/kitchen/{id}", async (int id, RestaurantContext context) =>
 {
     var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
     var candidate = await context.ProductPrepStations.ProjectTo<ProductPrepStationDto>(mapper).FirstOrDefaultAsync(q => q.Id == id);
@@ -289,7 +289,7 @@ app.MapGet("/cucina/{id}", async (int id, RestaurantContext context) =>
 
 }).RequireAuthorization();
 
-app.MapGet("/cucina/{id}/ordine", async (int id, RestaurantContext context) =>
+app.MapGet("/kitchen/{id}/order", async (int id, RestaurantContext context) =>
 {
     var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
     var candidate = await context.Orders.Where(w => w.Product.IdPostazionePreparazione == id && w.CompletionDate==null && w.ProductId!=RestaurantController.MenuId).ProjectTo<OrderPrepDto>(mapper).ToListAsync();
@@ -301,7 +301,7 @@ app.MapGet("/cucina/{id}/ordine", async (int id, RestaurantContext context) =>
 
 }).RequireAuthorization();
 
-app.MapPost("/cucina/{id}/ordine", async (List<OrderDto> orders, HttpRequest request, RestaurantContext context) =>
+app.MapPost("/kitchen/{id}/order", async (List<OrderDto> orders, HttpRequest request, RestaurantContext context) =>
 {
     foreach (var order in orders)
     {
@@ -319,12 +319,12 @@ app.MapPost("/cucina/{id}/ordine", async (List<OrderDto> orders, HttpRequest req
 #endregion
 
 #region Statistiche
-app.MapGet("/statistiche/tavoli", async (RestaurantContext context) =>
+app.MapGet("/stats/tables", async (RestaurantContext context) =>
 {
     return await context.Tables.ToListAsync();
 }).RequireAuthorization();
 
-app.MapGet("/statistiche/ordini", async (RestaurantContext context) =>
+app.MapGet("/stats/order", async (RestaurantContext context) =>
 {
     var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
     return await context.Orders.Where(q =>  q.ProductId!=RestaurantController.MenuId && q.OrderDate.DayOfYear == DateTime.Today.DayOfYear).ProjectTo<OrderDto>(mapper).ToListAsync();
