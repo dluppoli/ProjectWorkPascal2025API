@@ -106,9 +106,9 @@ Aggiunge uno o più prodotti all'ordine del tavolo
 Restituisce tutte le stazioni di lavoro
 ### ```GET /kitchen/{id}```
 Restituisce il dettaglio di una stazione di lavoro, identificata dal suo id (numerico)
-### ```GET /kitchen/{id}/order (elenco piatti da preparare)```
+### ```GET /kitchen/{id}/order```
 Restituisce tutti i prodotti da preparare presso una stazione di lavoro, identificata dal suo id (numerico)
-### ```POST /kitchen/{id}/order (dichiara ordine preparato)```
+### ```POST /kitchen/{id}/order```
 Imposta alcuni prodotti come preparati (presso una stazione di lavoro)
 ```json
 [
@@ -124,4 +124,4 @@ Imposta alcuni prodotti come preparati (presso una stazione di lavoro)
 ### ```GET /stats/tables```
 Restituisce elenco dei tavoli
 ### ```GET /stats/order```
-Restituisce l'elenco dei prodotti ordinati nella giornata odierna
+Restituisce l'elenco dei prodotti ordinati nella giornata odierna, sia preparati che da preparare
