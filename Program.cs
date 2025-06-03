@@ -329,7 +329,7 @@ app.MapGet("/stats/order", async (RestaurantContext context) =>
     var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>());
     return await context.Orders
         .Where(q => q.ProductId != RestaurantController.MenuId && q.OrderDate.DayOfYear == DateTime.Today.DayOfYear)
-        .ProjectTo<OrderDto>(mapper)
+        .ProjectTo<OrderStatsDto>(mapper)
         .ToListAsync();
 }).RequireAuthorization();
 
