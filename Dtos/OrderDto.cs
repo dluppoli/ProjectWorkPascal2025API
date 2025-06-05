@@ -7,6 +7,8 @@ public class OrderDto
 
     public int Qty { get; set; }
 
+    public string Category { get; set; } = null!;
+
     public double Price { get; set; }
 
     public DateTime OrderDate { get; set; }
