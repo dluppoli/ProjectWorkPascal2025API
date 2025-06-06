@@ -96,7 +96,7 @@ app.MapPut("/waiter/tables/{id}", async (int id, TableEditDto tableEdit, Restaur
         }
         candidate.close();
     }
-    else if (tableEdit.Occupied == true && tableEdit.Occupants != null)
+    else if (tableEdit.Occupied == true && tableEdit.Occupants != null && tableEdit.Occupants>0)
     {
         candidate.open((int)tableEdit.Occupants);
         var menuProduct = await context.Products.FirstOrDefaultAsync(q => q.Id == RestaurantController.MenuId);
