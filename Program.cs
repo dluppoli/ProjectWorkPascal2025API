@@ -150,7 +150,7 @@ app.MapDelete("/waiter/tables/{id}/order", async (int id, RestaurantContext cont
     if (!candidate.Occupied || candidate.Occupants == null || candidate.Occupants <= 0)
         return Results.BadRequest();
 
-    context.Orders.RemoveRange(context.Orders.Where(q => q.TableId == id && q.TableKey == candidate.TableKey && q.ProductId!=RestaurantController.MenuId));
+    context.Orders.RemoveRange(context.Orders.Where(q => q.TableId == id && q.TableKey == candidate.TableKey && q.ProductId!=RestaurantController.MenuId && q.CompletionDate==null));
 
     await context.SaveChangesAsync();
     return Results.Ok();
