@@ -90,10 +90,8 @@ app.MapPut("/waiter/tables/{id}", async (int id, TableEditDto tableEdit, Restaur
 
     if (tableEdit.Occupied == false)
     {
-        foreach(var order in context.Orders.Where(q => q.TableId == candidate.Id && q.TableKey == candidate.TableKey && q.CompletionDate == null))
-        {
-            order.CompletionDate = DateTime.Now;
-        }
+        var orders = context.Orders.Where(q => q.TableId == candidate.Id && q.TableKey == candidate.TableKey && q.CompletionDate == null);
+        context.Orders.RemoveRange(orders);
         candidate.close();
     }
     else if (tableEdit.Occupied == true && tableEdit.Occupants != null && tableEdit.Occupants>0)
